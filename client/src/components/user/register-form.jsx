@@ -5,22 +5,22 @@ import ValidationHelper from "../../utility/ValidationHelper.js";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+const RegisterForm = () => {
+    let { RegisterFormData, RegisterFormOnChange, UserRegisterRequest } = UserStore();
     let navigate = useNavigate();
-    let { LoginFormData, LoginFormOnChange, UserLoginRequest } = UserStore();
 
     const onFormSubmit = async () => {
-        if (!ValidationHelper.IsEmail(LoginFormData.email)) {
-            toast.error("Valid Email Address Required");
-        } else if (!LoginFormData.password) {
+        if (ValidationHelper.IsEmpty(RegisterFormData.name)) {
+            toast.error("Name is Required!");
+        } else if (ValidationHelper.IsEmpty(RegisterFormData.email)) {
+            toast.error("Email is required!");
+        } else if (ValidationHelper.IsEmpty(RegisterFormData.password)) {
             toast.error("Password is required!");
         } else {
-            let res = await UserLoginRequest(LoginFormData.email, LoginFormData.password);
+            let res = await UserRegisterRequest(RegisterFormData.name, RegisterFormData.email, RegisterFormData.password);
             if (res) {
-                toast.success("Login Success!");
-                navigate("/"); // Redirect user after successful login
-            } else {
-                toast.error("Login failed. Please check your credentials.");
+                toast.success("Register Success!");
+                navigate("/");
             }
         }
     };
@@ -30,26 +30,39 @@ const LoginForm = () => {
             <div className="row d-flex justify-content-center">
                 <div className="col-md-6 col-lg-4">
                     <div className="card p-4 shadow-sm">
-                        <h4 className="text-center mb-4">Login to Your Account</h4>
+                        <h4 className="text-center mb-4">Register</h4>
+                        <p className="text-center mb-4">Create a new account</p>
+
+                        <div className="mb-3">
+                            <label htmlFor="name" className="form-label">Name</label>
+                            <input
+                                id="name"
+                                value={RegisterFormData.name}
+                                onChange={(e) => { RegisterFormOnChange("name", e.target.value) }}
+                                placeholder="Enter your name"
+                                type="text"
+                                className="form-control"
+                            />
+                        </div>
 
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email</label>
                             <input
                                 id="email"
-                                value={LoginFormData.email}
-                                onChange={(e) => { LoginFormOnChange("email", e.target.value) }}
+                                value={RegisterFormData.email}
+                                onChange={(e) => { RegisterFormOnChange("email", e.target.value) }}
                                 placeholder="Enter your email"
                                 type="email"
                                 className="form-control"
                             />
                         </div>
 
-                        <div className="mb-3">
+                        <div className="mb-4">
                             <label htmlFor="password" className="form-label">Password</label>
                             <input
                                 id="password"
-                                value={LoginFormData.password}
-                                onChange={(e) => { LoginFormOnChange("password", e.target.value) }}
+                                value={RegisterFormData.password}
+                                onChange={(e) => { RegisterFormOnChange("password", e.target.value) }}
                                 placeholder="********"
                                 type="password"
                                 className="form-control"
@@ -59,13 +72,14 @@ const LoginForm = () => {
                         <div className="d-grid gap-2">
                             <UserSubmitButton
                                 onClick={onFormSubmit}
+                                submit={false}
                                 className="btn btn-success"
-                                text="Login"
+                                text="Register"
                             />
                         </div>
 
                         <div className="mt-3 text-center">
-                            <p className="small text-muted">Don't have an account? <Link to="/register">Register here</Link></p>
+                            <p className="small text-muted">Already have an account? <Link to="/login">Login here</Link></p>
                         </div>
                     </div>
                 </div>
@@ -74,4 +88,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default RegisterForm;

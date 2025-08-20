@@ -1,95 +1,101 @@
-import create from 'zustand';
-import axios  from "axios";
-import {getEmail, setEmail, unauthorized} from "../utility/utility.js";
+import { create } from 'zustand';
+import axios from "axios";
+import { getEmail, setEmail, unauthorized } from "../utility/utility.js";
 import Cookies from "js-cookie";
-const UserStore=create((set)=>({
+const UserStore = create((set) => ({
 
-    isLogin:()=>{
+    isLogin: () => {
         return !!Cookies.get('token');
     },
 
-    LoginFormData:{email:""},
-    LoginFormOnChange:(name,value)=>{
-        set((state)=>({
-            LoginFormData:{
+    LoginFormData: { email: "", password: "" },
+    LoginFormOnChange: (name, value) => {
+        set((state) => ({
+            LoginFormData: {
                 ...state.LoginFormData,
-                [name]:value
+                [name]: value
             }
         }))
     },
-    UserOTPRequest:async(email)=>{
-        set({isFormSubmit:true})
-        let res=await axios.get(`/api/v1/UserOTP/${email}`);
+    UserLoginRequest: async (email, password) => {
+        set({ isFormSubmit: true })
+        let res = await axios.post(`/api/v1/login`, {
+            email: email,
+            password: password
+        });
         setEmail(email);
-        set({isFormSubmit:false})
+        set({ isFormSubmit: false })
         return res.data['status'] === "success";
     },
 
 
-    UserLogoutRequest:async()=>{
-        set({isFormSubmit:true})
-        let res=await axios.get(`/api/v1/UserLogout`);
-        set({isFormSubmit:false})
+    UserLogoutRequest: async () => {
+        set({ isFormSubmit: true })
+        let res = await axios.get(`/api/v1/UserLogout`);
+        set({ isFormSubmit: false })
         return res.data['status'] === "success";
     },
 
 
 
-    OTPFormData:{otp:""},
-    OTPFormOnChange:(name,value)=>{
-        set((state)=>({
-            OTPFormData:{
-                ...state.OTPFormData,
-                [name]:value
+    RegisterFormData: { name: "", email: "", password: "" },
+    RegisterFormOnChange: (name, value) => {
+        set((state) => ({
+            RegisterFormData: {
+                ...state.RegisterFormData,
+                [name]: value
             }
         }))
     },
-    VerifyLoginRequest:async(otp)=>{
-        set({isFormSubmit:true})
-        let email= getEmail();
-        let res=await axios.get(`/api/v1/VerifyLogin/${email}/${otp}`);
-        set({isFormSubmit:false})
+    UserRegisterRequest: async (name, email, password) => {
+        set({ isFormSubmit: true })
+        let res = await axios.post(`/api/v1/register-user`, {
+            name: name,
+            email: email,
+            password: password
+        });
+        set({ isFormSubmit: false })
         return res.data['status'] === "success";
     },
-    isFormSubmit:false,
+    isFormSubmit: false,
 
 
 
 
 
 
-    ProfileForm:{cus_add:"",cus_city:"",cus_country:"",cus_fax:"",cus_name:"",cus_phone:"",cus_postcode:"",cus_state:"",ship_add:"",ship_city:"",ship_country:"",ship_name:"",ship_phone:"",ship_postcode:"",ship_state:""},
-    ProfileFormChange:(name,value)=>{
-        set((state)=>({
-            ProfileForm:{
+    ProfileForm: { cus_add: "", cus_city: "", cus_country: "", cus_fax: "", cus_name: "", cus_phone: "", cus_postcode: "", cus_state: "", ship_add: "", ship_city: "", ship_country: "", ship_name: "", ship_phone: "", ship_postcode: "", ship_state: "" },
+    ProfileFormChange: (name, value) => {
+        set((state) => ({
+            ProfileForm: {
                 ...state.ProfileForm,
-                [name]:value
+                [name]: value
             }
         }))
     },
 
 
-    ProfileDetails:null,
-    ProfileDetailsRequest:async()=>{
+    ProfileDetails: null,
+    ProfileDetailsRequest: async () => {
         try {
-            let res=await axios.get(`/api/v1/ReadProfile`);
-            if(res.data['data'].length>0){
-                set({ProfileDetails:res.data['data'][0]})
-                set({ProfileForm:res.data['data'][0]})
-            }else{
-                set({ProfileDetails:[]})
+            let res = await axios.get(`/api/v1/ReadProfile`);
+            if (res.data['data'].length > 0) {
+                set({ ProfileDetails: res.data['data'][0] })
+                set({ ProfileForm: res.data['data'][0] })
+            } else {
+                set({ ProfileDetails: [] })
             }
-        }catch (e) {
+        } catch (e) {
             unauthorized(e.response.status)
         }
     },
 
-    ProfileSaveRequest:async(PostBody)=>{
+    ProfileSaveRequest: async (PostBody) => {
         try {
-            set({ProfileDetails:null})
-            let res=await axios.post(`/api/v1/UpdateProfile`,PostBody);
+            set({ ProfileDetails: null })
+            let res = await axios.post(`/api/v1/UpdateProfile`, PostBody);
             return res.data['status'] === "success";
-        }catch (e) {
+        } catch (e) {
             unauthorized(e.response.status)
         }
     }
