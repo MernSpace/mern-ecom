@@ -6,9 +6,13 @@ import './assets/css/main.css'
 import './assets/css/animate.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-loading-skeleton/dist/skeleton.css'
+import "./assets/css/dropdownmenu.css"
+import "./assets/css/model.css"
+import "./assets/css/progress.css"
+import "./assets/css/sidebar.css"
 import App from './App.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-          <App />
+    <App />
   </React.StrictMode>
 )

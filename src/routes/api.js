@@ -8,8 +8,20 @@ const FeaturesController = require("../controllers/FeaturesController");
 
 const AuthVerification = require('../middlewares/AuthVerification')
 
+const AdminController = require("../controllers/AdminController")
+
 
 const router = express.Router();
+
+
+// Admin route
+router.post("/register-admin", AdminController.RegisterAdmin)
+router.post("/admin-login", AdminController.AdminLogin)
+router.get("/admin-profile", AuthVerification, AdminController.ReadProfile)
+router.get("/update-admin", AuthVerification, AdminController.UpdateProfile)
+
+
+
 
 // Product
 router.get('/ProductBrandList', ProductController.ProductBrandList)

@@ -19,6 +19,9 @@ import OrderPage from "./pages/order-page.jsx";
 import InvoicePage from "./pages/invoice-page.jsx";
 import { useEffect } from "react";
 import RegisterPage from "./pages/register-page.jsx";
+import AdminRegisterPage from "./pages/admin/admin-register-page.jsx";
+import AdminLoginPage from "./pages/admin/admin-login-page.jsx";
+import DashboardPage from "./pages/dashboard/DashboardPage.jsx";
 
 
 function ScrollToTopOnNavigation() {
@@ -55,6 +58,14 @@ const App = () => {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/orders" element={<OrderPage />} />
                 <Route path="/invoice/:id" element={<InvoicePage />} />
+
+
+                {/* admin pages */}
+                <Route path="/register-admin" element={<AdminRegisterPage />} />
+                <Route path="/admin-login" element={<AdminLoginPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+
+
             </Routes>
         </BrowserRouter>
 
