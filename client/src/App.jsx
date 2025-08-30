@@ -23,6 +23,8 @@ import AdminRegisterPage from "./pages/admin/admin-register-page.jsx";
 import AdminLoginPage from "./pages/admin/admin-login-page.jsx";
 import DashboardPage from "./pages/dashboard/DashboardPage.jsx";
 import AdminProfilePage from "./pages/admin/admin-profile-page.jsx";
+import ProductListPage from "./pages/admin/Product-List-Page.jsx";
+import ProductDetailPage from "./pages/admin/ProductDetail-page.jsx";
 
 
 function ScrollToTopOnNavigation() {
@@ -66,6 +68,9 @@ const App = () => {
                 <Route path="/admin-login" element={<AdminLoginPage />} />
                 <Route path="/admin-profile" element={<AdminProfilePage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/products" element={<ProductListPage />} />
+
+                <Route path="/products/:id" element={<ProductDetailPage />} />
 
 
             </Routes>
