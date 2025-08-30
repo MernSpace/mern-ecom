@@ -19,7 +19,9 @@ router.post("/register-admin", AdminController.RegisterAdmin)
 router.post("/admin-login", AdminController.AdminLogin)
 router.get("/admin-profile", AuthVerification, AdminController.ReadProfile)
 router.post("/update-admin/:id", AuthVerification, AdminController.UpdateProfile)
-
+// admin Product
+router.get("/get-product", AuthVerification, ProductController.AllProduct)
+router.get("/get-product-detail/:ProductID", AuthVerification, ProductController.AdminProductDetail)
 
 
 

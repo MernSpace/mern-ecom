@@ -64,14 +64,14 @@ const MasterLayout = (props) => {
             subMenu: [],
         },
         {
-            title: 'Students',
+            title: 'Products',
             icon: <BsPeople className="side-bar-item-icon" />,
-            url: '/Student',
+            url: '/products',
             subMenu: [
                 {
-                    title: 'New Student',
+                    title: 'Products',
                     icon: <BsCircle size={16} className="side-bar-subitem-icon" />,
-                    url: '/StudentCreateUpdatePage',
+                    url: '/products',
                 },
                 {
                     title: 'Student List',
