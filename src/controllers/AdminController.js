@@ -78,9 +78,27 @@ exports.AdminLogin = async (req, res) => {
 
 
 exports.UpdateProfile = async (req, res) => {
-    let result = await SaveProfileService(req)
-    return res.status(200).json(result)
-}
+    try {
+        const id = req.params.id;
+        const postBody = req.body;
+
+        // ✅ Update document and return updated one
+        const updatedProfile = await AdminModel.findByIdAndUpdate(
+            id,
+            { $set: postBody },
+            { new: true } // return updated document
+        );
+
+        if (!updatedProfile) {
+            return res.status(404).json({ status: "Fail", message: "Profile not found!" });
+        }
+
+        res.status(200).json({ status: "Success", UserDetail: updatedProfile });
+    } catch (e) {
+        console.error("UpdateProfile Error:", e);
+        res.status(400).json({ status: "Fail", message: "Something went wrong!" });
+    }
+};
 
 
 exports.ReadProfile = async (req, res) => {

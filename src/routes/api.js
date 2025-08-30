@@ -18,7 +18,7 @@ const router = express.Router();
 router.post("/register-admin", AdminController.RegisterAdmin)
 router.post("/admin-login", AdminController.AdminLogin)
 router.get("/admin-profile", AuthVerification, AdminController.ReadProfile)
-router.get("/update-admin", AuthVerification, AdminController.UpdateProfile)
+router.post("/update-admin/:id", AuthVerification, AdminController.UpdateProfile)
 
 
 

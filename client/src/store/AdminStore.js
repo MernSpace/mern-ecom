@@ -4,7 +4,7 @@ import { getEmail, setEmail, unauthorized } from "../utility/utility.js";
 import Cookies from "js-cookie";
 import { setUserDetails } from '../utility/SessionHelper.js';
 const AdminStore = create((set) => ({
-    AdminRegisterFormData: { name: "", email: "", phone: "", password: "" },
+    AdminRegisterFormData: { name: "", email: "", phone: "", password: "", photo: "" },
     AdminRegisterFormOnChange: (name, value) => {
         set((state) => ({
             AdminRegisterFormData: {
@@ -28,7 +28,19 @@ const AdminStore = create((set) => ({
         return res.data['status'] === "success";
     },
     isFormSubmit: false,
-
+    AdminProfileUpdateRequest: async (ID, name, email, phone, photo) => {
+        set({ isFormSubmit: true })
+        let res = await axios.post(`/api/v1/update-admin/${ID}`, {
+            email: email,
+            name: name,
+            phone: phone,
+            photo: photo
+        });
+        setEmail(email);
+        set({ isFormSubmit: false })
+        setUserDetails(res.data['UserDetail'])
+        return res.data['status'] === "Success";
+    },
     adminLoginFormData: { email: "", password: "" },
     adminLoginFormOnChange: (name, value) => {
         set((state) => ({
